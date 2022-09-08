@@ -383,8 +383,7 @@
 									<a class="dropdown-item" href=""><i class="bx bx-envelope"></i>Messages</a>
 									<a class="dropdown-item" href=""><i class="bx bx-slider-alt"></i> Account
 										Settings</a>
-									<a class="dropdown-item" href="signin.html"><i class="bx bx-log-out"></i> Sign
-										Out</a>
+									<a class="dropdown-item" href="JavaScript:void(0)" @click="Logout()"><i class="bx bx-log-out"></i>ອອກຈາກລະບົບ</a>
 								</div>
 							</li>
 
@@ -1084,6 +1083,18 @@ export default {
     },
 
     methods: {
+        Logout(){
+            this.$axios.post('api/logout')
+            .then((respone) => {
+                if(respone.data.success){
+                    window.location.href = "/"
+                }else{
+                    console.log(respone.data.message)
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
 
     },
     created(){

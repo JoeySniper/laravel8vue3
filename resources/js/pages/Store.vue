@@ -230,7 +230,7 @@ export default {
             FormShow:false,
             FormType:true,
             FormID:'',
-            FormData:[ { "id": 492, "name": "1111", "amount": "11111", "price_buy": "1111", "price_sell": "11111" }, { "id": 672, "name": "222222", "amount": "22222", "price_buy": "22222", "price_sell": "22222" }, { "id": 815, "name": "33333", "amount": "3333", "price_buy": "33333", "price_sell": "3333" }, { "id": 796, "name": "44444", "amount": "4444", "price_buy": "44444", "price_sell": "44444" } ] ,
+            FormData:[] ,
             FormProduct: {
                 name:'',
                 amount:'',
@@ -270,15 +270,34 @@ export default {
             if(this.FormType == true){
                 // ເພີ່ມຂໍໍ້ມູນໃໝ່
 
-                this.FormData.push({
-                id: Math.floor(Math.random() * 1000),
-                name: this.FormProduct.name,
-                amount: this.FormProduct.amount,
-                price_buy: this.FormProduct.price_buy,
-                price_sell: this.FormProduct.price_sell
+                // this.FormData.push({
+                // id: Math.floor(Math.random() * 1000),
+                // name: this.FormProduct.name,
+                // amount: this.FormProduct.amount,
+                // price_buy: this.FormProduct.price_buy,
+                // price_sell: this.FormProduct.price_sell
+                // });
 
-
-            });
+                    let formData = new FormData();
+                    formData.append('name', this.FormProduct.name);
+                    formData.append('amount', this.FormProduct.amount);
+                    formData.append('price_buy', this.FormProduct.price_buy);
+                    formData.append('price_sell', this.FormProduct.price_sell);
+                    // formData.append('file', this.imageProduct);
+                    this.$axios.get("/sanctum/csrf-cookie").then((response)=>{
+                        this.$axios.post("/api/store/add", formData, {headers:{"Content-Type": "multipart/form-data"}})
+                        .then((response)=>{
+                            if(response.data.success){
+                                this.GetAllStore();
+                                console.log('ບັນທຶກຂໍ້ມູນສຳເລັດ');
+                            }else{
+                                console.log(response.data.message);
+                            }
+                        })
+                        .catch((error)=>{
+                            console.log(error);
+                        });
+                    })
                 console.log('Add new');
 
             }else{
@@ -342,7 +361,23 @@ export default {
 			let val = (value / 1).toFixed(0).replace(",", ".");
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		},
+
+        GetAllStore(){
+            this.$axios.get("/sanctum/csrf-cookie").then((respone)=>{
+                this.$axios.get('api/store').then((respone)=>{
+                    this.FormData = respone.data;
+                }).catch((error) => {
+                    console.log(error);
+                });
+            });
+
+        }
     },
+
+    created(){
+        this.GetAllStore();
+    },
+
     beforeRouteEnter(to, from, next) {
             //window.Laravel.urlpath = to.name
         if (!window.Laravel.isLoggedin) {

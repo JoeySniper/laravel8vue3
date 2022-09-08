@@ -27,22 +27,22 @@
 												<div class="main-signup-header">
 													<h2>Welcome back!</h2>
 													<h5 class="fw-semibold mb-4">Please sign in to continue.</h5>
-													
+
 														<div class="form-group">
 															<label>ອີເມວ</label> <input class="form-control" placeholder="Enter your email" type="text" v-model="email">
 														</div>
 														<div class="form-group">
-															<label>ລະຫັດຜ່ານ</label> <input class="form-control" placeholder="Enter your password" type="password" v-model="password">
+															<label>ລະຫັດຜ່ານ</label> <input class="form-control" placeholder="Enter your password" type="password" v-model="password" @keyup.enter="Login()">
 														</div><button class="btn btn-main-primary btn-block" @click="Login()">ເຂົ້າສູ່ລະບົບ</button>
-														
+
 														<div class="alert alert-solid-warning mt-4" role="alert" v-if="showError">
 															<button aria-label="Close" class="close" data-bs-dismiss="alert" type="button">
 															<span aria-hidden="true">&times;</span></button>
 															<strong>ຜິດພາດ</strong> {{ textError }}.
 														</div>
-													
+
 													<div class="main-signin-footer mt-5">
-													
+
 														<p>ບໍ່ໄດ້ລົງທະບຽນ? <router-link to="/register"> ຄິກລົງທະບຽນ</router-link></p>
 													</div>
 												</div>
@@ -89,7 +89,7 @@ export default {
 				}else{
 					this.showError = false;
 					this.textError = '';
-					
+
 					this.$axios.post('api/login', {
 						email: this.email,
 						password: this.password
