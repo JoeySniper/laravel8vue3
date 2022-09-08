@@ -19774,10 +19774,46 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Laravel9vue3Login',
   data: function data() {
-    return {};
+    return {
+      email: '',
+      password: '',
+      showError: false,
+      textError: ''
+    };
   },
   mounted: function mounted() {},
-  methods: {}
+  methods: {
+    Login: function Login() {
+      var _this = this;
+
+      if (this.email == '' || this.password == '') {
+        this.showError = true;
+        this.textError = 'ກະລຸນາປ້ອນອີເມວ ແລະ ລະຫັດຜ່ານ!';
+      } else {
+        if (this.password.length < 4) {
+          this.showError = true;
+          this.textError = 'ກະລຸນາປ້ອນລະຫັດຜ່ານ ຕ້ອງຫຼາຍກ່ວາ 4 ໂຕອັກສອນ!';
+        } else {
+          this.showError = false;
+          this.textError = '';
+          this.$axios.post('api/login', {
+            email: this.email,
+            password: this.password
+          }).then(function (respone) {
+            if (respone.data.success) {
+              // this.$router.push('/store') // ແບບໃສ່ Vue
+              window.location.href = '/store'; // ແບບ JAVA SCRIPT
+            } else {
+              _this.showError = true;
+              _this.textError = respone.data.message;
+            }
+          })["catch"](function (err) {
+            console.log(error);
+          });
+        }
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -19852,13 +19888,14 @@ __webpack_require__.r(__webpack_exports__);
           this.textError = 'ລະຫັດຜ່ານບໍ່ຄືກັນ';
         } else {
           // song api pai database
-          axios.post("api/register", {
+          this.$axios.post("api/register", {
             name: this.name,
             email: this.email,
             password: this.password
           }).then(function (respone) {
             if (respone.data.success) {
-              _this.$router.push('login');
+              _this.$router.push('login'); //ສົ່ງໄປໜ້າ Login
+
             } else {
               _this.showError = true;
               _this.textError = 'ການລົງທະບຽນບໍ່ສຳເລັດ!';
@@ -21230,12 +21267,149 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+var _hoisted_1 = {
+  "class": "row no-gutter"
+};
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row no-gutter\"><!-- The image half --><div class=\"col-md-6 col-lg-6 col-xl-7 d-none d-md-flex bg-primary-transparent\"><div class=\"row wd-100p mx-auto text-center\"><div class=\"col-md-12 col-lg-12 col-xl-12 my-auto mx-auto wd-100p\"><img src=\"assets/img/media/login.png\" class=\"my-auto ht-xl-80p wd-md-100p wd-xl-80p mx-auto\" alt=\"logo\"></div></div></div><!-- The content half --><div class=\"col-md-6 col-lg-6 col-xl-5 bg-white\"><div class=\"login d-flex align-items-center py-2\"><!-- Demo content--><div class=\"container p-0\"><div class=\"row\"><div class=\"col-md-10 col-lg-10 col-xl-9 mx-auto\"><div class=\"card-sigin\"><div class=\"mb-5 d-flex\"><a href=\"index.html\"><img src=\"assets/img/brand/favicon.png\" class=\"sign-favicon-a ht-40\" alt=\"logo\"><img src=\"assets/img/brand/favicon-white.png\" class=\"sign-favicon-b ht-40\" alt=\"logo\"></a><h1 class=\"main-logo1 ms-1 me-0 my-auto tx-28\">Va<span>le</span>x</h1></div><div class=\"card-sigin\"><div class=\"main-signup-header\"><h2>Welcome back!</h2><h5 class=\"fw-semibold mb-4\">Please sign in to continue.</h5><div class=\"form-group\"><label>Email</label> <input class=\"form-control\" placeholder=\"Enter your email\" type=\"text\"></div><div class=\"form-group\"><label>Password</label> <input class=\"form-control\" placeholder=\"Enter your password\" type=\"password\"></div><button class=\"btn btn-main-primary btn-block\">Sign In</button><div class=\"main-signin-footer mt-5\"><p><a href=\"\">Forgot password?</a></p><p>Don&#39;t have an account? <a href=\"page-signup.html\">Create an Account</a></p></div></div></div></div></div></div></div><!-- End --></div></div><!-- End --></div>", 1);
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "col-md-6 col-lg-6 col-xl-7 d-none d-md-flex bg-primary-transparent"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "row wd-100p mx-auto text-center"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "col-md-12 col-lg-12 col-xl-12 my-auto mx-auto wd-100p"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "assets/img/media/login.png",
+  "class": "my-auto ht-xl-80p wd-md-100p wd-xl-80p mx-auto",
+  alt: "logo"
+})])])], -1
+/* HOISTED */
+);
 
-var _hoisted_2 = [_hoisted_1];
+var _hoisted_3 = {
+  "class": "col-md-6 col-lg-6 col-xl-5 bg-white"
+};
+var _hoisted_4 = {
+  "class": "login d-flex align-items-center py-2"
+};
+var _hoisted_5 = {
+  "class": "container p-0"
+};
+var _hoisted_6 = {
+  "class": "row"
+};
+var _hoisted_7 = {
+  "class": "col-md-10 col-lg-10 col-xl-9 mx-auto"
+};
+var _hoisted_8 = {
+  "class": "card-sigin"
+};
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"mb-5 d-flex\"><a href=\"index.html\"><img src=\"assets/img/brand/favicon.png\" class=\"sign-favicon-a ht-40\" alt=\"logo\"><img src=\"assets/img/brand/favicon-white.png\" class=\"sign-favicon-b ht-40\" alt=\"logo\"></a><h1 class=\"main-logo1 ms-1 me-0 my-auto tx-28\">Va<span>le</span>x</h1></div>", 1);
+
+var _hoisted_10 = {
+  "class": "card-sigin"
+};
+var _hoisted_11 = {
+  "class": "main-signup-header"
+};
+
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "Welcome back!", -1
+/* HOISTED */
+);
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+  "class": "fw-semibold mb-4"
+}, "Please sign in to continue.", -1
+/* HOISTED */
+);
+
+var _hoisted_14 = {
+  "class": "form-group"
+};
+
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "ອີເມວ", -1
+/* HOISTED */
+);
+
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)();
+
+var _hoisted_17 = {
+  "class": "form-group"
+};
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "ລະຫັດຜ່ານ", -1
+/* HOISTED */
+);
+
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)();
+
+var _hoisted_20 = {
+  key: 0,
+  "class": "alert alert-solid-warning mt-4",
+  role: "alert"
+};
+
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "aria-label": "Close",
+  "class": "close",
+  "data-bs-dismiss": "alert",
+  type: "button"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "aria-hidden": "true"
+}, "×")], -1
+/* HOISTED */
+);
+
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "ຜິດພາດ", -1
+/* HOISTED */
+);
+
+var _hoisted_23 = {
+  "class": "main-signin-footer mt-5"
+};
+
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("ບໍ່ໄດ້ລົງທະບຽນ? ");
+
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ຄິກລົງທະບຽນ");
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, _hoisted_2);
+  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" The image half "), _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" The content half "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Demo content"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_hoisted_15, _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "form-control",
+    placeholder: "Enter your email",
+    type: "text",
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.email = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.email]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "form-control",
+    placeholder: "Enter your password",
+    type: "password",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.password = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.password]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-main-primary btn-block",
+    onClick: _cache[2] || (_cache[2] = function ($event) {
+      return $options.Login();
+    })
+  }, "ເຂົ້າສູ່ລະບົບ"), $data.showError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, [_hoisted_21, _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.textError) + ". ", 1
+  /* TEXT */
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/register"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_25];
+    }),
+    _: 1
+    /* STABLE */
+
+  })])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End ")])]);
 }
 
 /***/ }),
@@ -21253,41 +21427,44 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
+
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div><!-- breadcrumb --><div class=\"breadcrumb-header justify-content-between\"><div class=\"left-content\"><div><h2 class=\"main-content-title tx-24 mg-b-1 mg-b-lg-1\">Hi, welcome back!</h2><p class=\"mg-b-0\">Sales monitoring dashboard template.</p></div></div><div class=\"main-dashboard-header-right\"><div><label class=\"tx-13\">Customer Ratings</label><div class=\"main-star\"><i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star\"></i> <span>(14,873)</span></div></div><div><label class=\"tx-13\">Online Sales</label><h5>563,275</h5></div><div><label class=\"tx-13\">Offline Sales</label><h5>783,675</h5></div></div></div><!-- breadcrumb --></div>", 1);
+
+var _hoisted_2 = {
   "class": "row row-sm"
 };
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"col-md-8\"><div class=\"card\"><div class=\"card-body\"><input type=\"text\" class=\"form-control\" id=\"inputName\" placeholder=\"ຄົ້ນຫາ.....\"></div></div><div class=\"row\"><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div></div></div>", 1);
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"col-md-8\"><div class=\"card\"><div class=\"card-body\"><input type=\"text\" class=\"form-control\" id=\"inputName\" placeholder=\"ຄົ້ນຫາ.....\"></div></div><div class=\"row\"><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div><div class=\"col-md-3\"><div class=\"card\"><img class=\"card-img-top\" src=\"assets/img/photos/1.jpg\" alt=\"Card image cap\"><div class=\"card-body\"><p class=\"card-text\">To take a trivial example</p></div></div></div></div></div>", 1);
 
-var _hoisted_3 = {
+var _hoisted_4 = {
   "class": "col-md-4"
 };
-var _hoisted_4 = {
+var _hoisted_5 = {
   "class": "card"
 };
-var _hoisted_5 = {
+var _hoisted_6 = {
   "class": "card-body"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
   "class": "card-title text-info d-flex justify-content-between"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, " ລວມຍອດເງິນ: ")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "00 ກີບ")])], -1
 /* HOISTED */
 );
 
-var _hoisted_7 = ["disabled"];
+var _hoisted_8 = ["disabled"];
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "mdi mdi-currency-usd"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ຊຳລະເງິນ ");
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ຊຳລະເງິນ ");
 
-var _hoisted_10 = [_hoisted_8, _hoisted_9];
+var _hoisted_11 = [_hoisted_9, _hoisted_10];
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "table-responsive",
   style: {
     "height": "65vh",
@@ -21306,7 +21483,7 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-success text-white mb-2",
     style: {
@@ -21316,9 +21493,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return _ctx.BtPay && _ctx.BtPay.apply(_ctx, arguments);
     })
-  }, _hoisted_10, 8
+  }, _hoisted_11, 8
   /* PROPS */
-  , _hoisted_7), _hoisted_11])])])])]);
+  , _hoisted_8), _hoisted_12])])])])]);
 }
 
 /***/ }),
@@ -21387,7 +21564,7 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "X", -1
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "ຜິດພາດ", -1
 /* HOISTED */
 );
 
@@ -21431,15 +21608,17 @@ var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)();
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_26 = {
   "class": "main-signup-footer mt-5"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Already have an account? "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-  href: "signin.html"
-}, "Sign In")])], -1
-/* HOISTED */
-);
+};
+
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("ມີຊື່ຜູ້ໃຊ້ແລ້ວ? ");
+
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("ໄປໜ້າ Login");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
+
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Demo content"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, $data.showError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [_hoisted_12, _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.textError) + ". ", 1
   /* TEXT */
   )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_hoisted_15, _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -21483,7 +21662,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[4] || (_cache[4] = function ($event) {
       return $options.Register();
     })
-  }, "ລົງທະບຽນ"), _hoisted_26])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End ")])]);
+  }, "ລົງທະບຽນ"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/login"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_28];
+    }),
+    _: 1
+    /* STABLE */
+
+  })])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End ")])]);
 }
 
 /***/ }),
@@ -21502,11 +21690,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row row-sm\"><div class=\"col-md-8\"><div class=\"card mg-b-20\"><div class=\"card-header pb-0\"><div class=\"d-flex justify-content-between\"><h4 class=\"card-title mg-b-0\">Bordered Table</h4><i class=\"mdi mdi-dots-horizontal text-gray\"></i></div><p class=\"tx-12 tx-gray-500 mb-2\">Example of Valex Bordered Table.. <a href=\"\">Learn more</a></p></div><div class=\"card-body\"> Boby </div></div></div><div class=\"col-md-4\"><div class=\"row\"><div class=\"col-12\"><div class=\"card bg-primary-gradient text-white\"><div class=\"card-body\"><div class=\"row\"><div class=\"col-6\"><div class=\"icon1 mt-2 text-center\"><i class=\"fe fe-users tx-40\"></i></div></div><div class=\"col-6\"><div class=\"mt-0 text-center\"><span class=\"text-white\">Members</span><h2 class=\"text-white mb-0\">600</h2></div></div></div></div></div></div><div class=\"col-12\"><div class=\"card bg-danger-gradient text-white\"><div class=\"card-body\"><div class=\"row\"><div class=\"col-6\"><div class=\"icon1 mt-2 text-center\"><i class=\"fe fe-shopping-cart tx-40\"></i></div></div><div class=\"col-6\"><div class=\"mt-0 text-center\"><span class=\"text-white\">Sales</span><h2 class=\"text-white mb-0\">854</h2></div></div></div></div></div></div><div class=\"col-12\"><div class=\"card bg-success-gradient text-white\"><div class=\"card-body\"><div class=\"row\"><div class=\"col-6\"><div class=\"icon1 mt-2 text-center\"><i class=\"fe fe-bar-chart-2 tx-40\"></i></div></div><div class=\"col-6\"><div class=\"mt-0 text-center\"><span class=\"text-white\">Profits</span><h2 class=\"text-white mb-0\">98K</h2></div></div></div></div></div></div></div></div></div>", 1);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div><!-- breadcrumb --><div class=\"breadcrumb-header justify-content-between\"><div class=\"left-content\"><div><h2 class=\"main-content-title tx-24 mg-b-1 mg-b-lg-1\">Hi, welcome back!</h2><p class=\"mg-b-0\">Sales monitoring dashboard template.</p></div></div><div class=\"main-dashboard-header-right\"><div><label class=\"tx-13\">Customer Ratings</label><div class=\"main-star\"><i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star\"></i> <span>(14,873)</span></div></div><div><label class=\"tx-13\">Online Sales</label><h5>563,275</h5></div><div><label class=\"tx-13\">Offline Sales</label><h5>783,675</h5></div></div></div><!-- breadcrumb --></div><div class=\"row row-sm\"><div class=\"col-md-8\"><div class=\"card mg-b-20\"><div class=\"card-header pb-0\"><div class=\"d-flex justify-content-between\"><h4 class=\"card-title mg-b-0\">Bordered Table</h4><i class=\"mdi mdi-dots-horizontal text-gray\"></i></div><p class=\"tx-12 tx-gray-500 mb-2\">Example of Valex Bordered Table.. <a href=\"\">Learn more</a></p></div><div class=\"card-body\"> Boby </div></div></div><div class=\"col-md-4\"><div class=\"row\"><div class=\"col-12\"><div class=\"card bg-primary-gradient text-white\"><div class=\"card-body\"><div class=\"row\"><div class=\"col-6\"><div class=\"icon1 mt-2 text-center\"><i class=\"fe fe-users tx-40\"></i></div></div><div class=\"col-6\"><div class=\"mt-0 text-center\"><span class=\"text-white\">Members</span><h2 class=\"text-white mb-0\">600</h2></div></div></div></div></div></div><div class=\"col-12\"><div class=\"card bg-danger-gradient text-white\"><div class=\"card-body\"><div class=\"row\"><div class=\"col-6\"><div class=\"icon1 mt-2 text-center\"><i class=\"fe fe-shopping-cart tx-40\"></i></div></div><div class=\"col-6\"><div class=\"mt-0 text-center\"><span class=\"text-white\">Sales</span><h2 class=\"text-white mb-0\">854</h2></div></div></div></div></div></div><div class=\"col-12\"><div class=\"card bg-success-gradient text-white\"><div class=\"card-body\"><div class=\"row\"><div class=\"col-6\"><div class=\"icon1 mt-2 text-center\"><i class=\"fe fe-bar-chart-2 tx-40\"></i></div></div><div class=\"col-6\"><div class=\"mt-0 text-center\"><span class=\"text-white\">Profits</span><h2 class=\"text-white mb-0\">98K</h2></div></div></div></div></div></div></div></div></div>", 2);
 
-var _hoisted_2 = [_hoisted_1];
+var _hoisted_3 = [_hoisted_1];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, _hoisted_2);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, _hoisted_3);
 }
 
 /***/ }),
@@ -21942,11 +22130,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row row-sm\"><div class=\"col-xl-12\"><div class=\"card mg-b-20\"><div class=\"card-header pb-0\"><div class=\"d-flex justify-content-between\"><h4 class=\"card-title mg-b-0\">Bordered Table</h4><i class=\"mdi mdi-dots-horizontal text-gray\"></i></div><p class=\"tx-12 tx-gray-500 mb-2\">Example of Valex Bordered Table.. <a href=\"\">Learn more</a></p></div><div class=\"card-body\"><div class=\"table-responsive\"><table class=\"table table-bordered mg-b-0 text-md-nowrap\"><thead><tr><th>ID</th><th>Name</th><th>Position</th><th>Salary</th></tr></thead><tbody><tr><th scope=\"row\">1</th><td>Joan Powell</td><td>Associate Developer</td><td>$450,870</td></tr><tr><th scope=\"row\">2</th><td>Gavin Gibson</td><td>Account manager</td><td>$230,540</td></tr><tr><th scope=\"row\">3</th><td>Julian Kerr</td><td>Senior Javascript Developer</td><td>$55,300</td></tr><tr><th scope=\"row\">4</th><td>Cedric Kelly</td><td>Accountant</td><td>$234,100</td></tr><tr><th scope=\"row\">5</th><td>Samantha May</td><td>Junior Technical Author</td><td>$43,198</td></tr></tbody></table></div></div></div></div></div>", 1);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div><!-- breadcrumb --><div class=\"breadcrumb-header justify-content-between\"><div class=\"left-content\"><div><h2 class=\"main-content-title tx-24 mg-b-1 mg-b-lg-1\">Hi, welcome back!</h2><p class=\"mg-b-0\">Sales monitoring dashboard template.</p></div></div><div class=\"main-dashboard-header-right\"><div><label class=\"tx-13\">Customer Ratings</label><div class=\"main-star\"><i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star active\"></i> <i class=\"typcn typcn-star\"></i> <span>(14,873)</span></div></div><div><label class=\"tx-13\">Online Sales</label><h5>563,275</h5></div><div><label class=\"tx-13\">Offline Sales</label><h5>783,675</h5></div></div></div><!-- breadcrumb --></div><div class=\"row row-sm\"><div class=\"col-xl-12\"><div class=\"card mg-b-20\"><div class=\"card-header pb-0\"><div class=\"d-flex justify-content-between\"><h4 class=\"card-title mg-b-0\">Bordered Table</h4><i class=\"mdi mdi-dots-horizontal text-gray\"></i></div><p class=\"tx-12 tx-gray-500 mb-2\">Example of Valex Bordered Table.. <a href=\"\">Learn more</a></p></div><div class=\"card-body\"><div class=\"table-responsive\"><table class=\"table table-bordered mg-b-0 text-md-nowrap\"><thead><tr><th>ID</th><th>Name</th><th>Position</th><th>Salary</th></tr></thead><tbody><tr><th scope=\"row\">1</th><td>Joan Powell</td><td>Associate Developer</td><td>$450,870</td></tr><tr><th scope=\"row\">2</th><td>Gavin Gibson</td><td>Account manager</td><td>$230,540</td></tr><tr><th scope=\"row\">3</th><td>Julian Kerr</td><td>Senior Javascript Developer</td><td>$55,300</td></tr><tr><th scope=\"row\">4</th><td>Cedric Kelly</td><td>Accountant</td><td>$234,100</td></tr><tr><th scope=\"row\">5</th><td>Samantha May</td><td>Junior Technical Author</td><td>$43,198</td></tr></tbody></table></div></div></div></div></div>", 2);
 
-var _hoisted_2 = [_hoisted_1];
+var _hoisted_3 = [_hoisted_1];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, _hoisted_2);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, _hoisted_3);
 }
 
 /***/ }),

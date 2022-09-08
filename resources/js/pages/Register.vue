@@ -20,7 +20,7 @@
 												<div class="alert alert-solid-warning" role="alert" v-if="showError">
                                                     <button aria-label="Close" class="close" data-bs-dismiss="alert" type="button">
                                                     <span aria-hidden="true">&times;</span></button>
-                                                    <strong>X</strong> {{ textError }}.
+                                                    <strong>ຜິດພາດ</strong> {{ textError }}.
                                                 </div>
 												
 													<div class="form-group">
@@ -39,7 +39,7 @@
 
 												
 												<div class="main-signup-footer mt-5">
-													<p>Already have an account? <a href="signin.html">Sign In</a></p>
+													<p>ມີຊື່ຜູ້ໃຊ້ແລ້ວ? <router-link to="/login">ໄປໜ້າ Login</router-link></p>
 												</div>
 											</div>
 										</div>
@@ -88,13 +88,13 @@ export default {
 
                     // song api pai database
 
-                    axios.post("api/register",{
+                    this.$axios.post("api/register",{
                         name: this.name,
                         email: this.email,
                         password: this.password
                     }).then( (respone)=>{
                         if(respone.data.success){
-                            this.$router.push('login')
+                            this.$router.push('login') //ສົ່ງໄປໜ້າ Login
                         }else{
                             this.showError = true;
                             this.textError = 'ການລົງທະບຽນບໍ່ສຳເລັດ!';

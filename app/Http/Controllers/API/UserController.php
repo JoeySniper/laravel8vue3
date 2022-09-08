@@ -45,4 +45,44 @@ class UserController extends Controller
         ];
         return response()->json($response);
     }
+
+    public function login(Request $request){
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+
+        if(Auth::attempt($credentials)){
+            $success = true;
+            $message = 'ການເຂົ້າສູ່ລະບົບ ສຳເລັດ!';
+        }else{
+            $success = false;
+            $message = 'ເຂົ້າສູ່ລະບົບ ບໍ່ສຳເລັດ';
+        }
+
+        $response = [
+            'success' => $success,
+            'message' => $message,
+        ];
+        return response()->json($response);
+    }
+
+    public function logout(){
+        try {
+            Session::flush();
+            $success = true;
+            $message = "ອອກຈາກລະບົບ ສຳເລັດ!";
+        } catch (\Throwable $th) {
+            //throw $th;
+            $success = false;
+            $message = $th->getMessage();
+        }
+    
+        // response
+        $response = [
+            'success' => $success,
+            'message' => $message,
+        ];
+        return response()->json($response);
+    }
 }

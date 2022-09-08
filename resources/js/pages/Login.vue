@@ -29,16 +29,21 @@
 													<h5 class="fw-semibold mb-4">Please sign in to continue.</h5>
 													
 														<div class="form-group">
-															<label>Email</label> <input class="form-control" placeholder="Enter your email" type="text">
+															<label>ອີເມວ</label> <input class="form-control" placeholder="Enter your email" type="text" v-model="email">
 														</div>
 														<div class="form-group">
-															<label>Password</label> <input class="form-control" placeholder="Enter your password" type="password">
-														</div><button class="btn btn-main-primary btn-block">Sign In</button>
+															<label>ລະຫັດຜ່ານ</label> <input class="form-control" placeholder="Enter your password" type="password" v-model="password">
+														</div><button class="btn btn-main-primary btn-block" @click="Login()">ເຂົ້າສູ່ລະບົບ</button>
 														
+														<div class="alert alert-solid-warning mt-4" role="alert" v-if="showError">
+															<button aria-label="Close" class="close" data-bs-dismiss="alert" type="button">
+															<span aria-hidden="true">&times;</span></button>
+															<strong>ຜິດພາດ</strong> {{ textError }}.
+														</div>
 													
 													<div class="main-signin-footer mt-5">
-														<p><a href="">Forgot password?</a></p>
-														<p>Don't have an account? <a href="page-signup.html">Create an Account</a></p>
+													
+														<p>ບໍ່ໄດ້ລົງທະບຽນ? <router-link to="/register"> ຄິກລົງທະບຽນ</router-link></p>
 													</div>
 												</div>
 											</div>
@@ -59,6 +64,11 @@ export default {
     data() {
         return {
 
+			email:'',
+			password:'',
+			showError:false,
+			textError:''
+
         };
     },
 
@@ -67,6 +77,37 @@ export default {
     },
 
     methods: {
+		Login(){
+			if(this.email == '' || this.password == ''){
+				this.showError = true;
+				this.textError = 'ກະລຸນາປ້ອນອີເມວ ແລະ ລະຫັດຜ່ານ!';
+			}else{
+
+				if(this.password.length < 4){
+					this.showError = true;
+					this.textError = 'ກະລຸນາປ້ອນລະຫັດຜ່ານ ຕ້ອງຫຼາຍກ່ວາ 4 ໂຕອັກສອນ!';
+				}else{
+					this.showError = false;
+					this.textError = '';
+					
+					this.$axios.post('api/login', {
+						email: this.email,
+						password: this.password
+					}).then((respone) => {
+						if(respone.data.success){
+							// this.$router.push('/store') // ແບບໃສ່ Vue
+							window.location.href = '/store'; // ແບບ JAVA SCRIPT
+						}else{
+							this.showError = true;
+							this.textError = respone.data.message;
+						}
+					}).catch((err) => {
+						console.log(error);
+					});
+				}
+
+			}
+		}
 
     },
 };
