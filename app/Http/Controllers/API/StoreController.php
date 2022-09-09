@@ -5,13 +5,16 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
     //
     public function index(){
         $store = Store::orderBy('created_at','desc')->get();
-
+        // $store =  DBStore::select('select * from stores');
+        // $store = DB::table('Stores')->get();
+        // $store = DB::table('Stores')->get();
         return $store;
     }
 
@@ -53,5 +56,40 @@ class StoreController extends Controller
             'message' => $message,
         ];
         return response()->json($response);
+    }
+
+    public function edit($id){
+        $store = Store::find($id);
+        return response()->json($store);
+    }
+
+    public function update($id, Request $request ){
+        $store = Store::find($id);
+        try {
+            $store->update([
+                'name' => $request->name,
+                'amount' => $request->amount,
+                'price_buy' => $request->price_buy,
+                'price_sell' => $request->price_sell
+                ]);
+
+            $success = true;
+            $message = "add success";
+        } catch (\Throwable $th) {
+            $success = false;
+            $message = $th->getMessage();
+        }
+
+        $response = [
+            'success' => $success,
+            'message' => $message,
+        ];
+        return response()->json($response);
+
+    }
+
+    public function delete($id){
+        $store = Store::find($id)->delete();
+        return $store;
     }
 }

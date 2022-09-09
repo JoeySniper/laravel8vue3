@@ -20037,19 +20037,36 @@ __webpack_require__.r(__webpack_exports__);
         console.log('Add new');
       } else {
         // ອັບເດດຂໍ້ມູນ
-        console.log('Update success');
-        this.FormData.find(function (i) {
-          return i.id == _this.FormID;
-        }).name = this.FormProduct.name;
-        this.FormData.find(function (i) {
-          return i.id == _this.FormID;
-        }).amount = this.FormProduct.amount;
-        this.FormData.find(function (i) {
-          return i.id == _this.FormID;
-        }).price_buy = this.FormProduct.price_buy;
-        this.FormData.find(function (i) {
-          return i.id == _this.FormID;
-        }).price_sell = this.FormProduct.price_sell;
+        console.log('Update success'); // this.FormData.find((i)=>i.id == this.FormID).name = this.FormProduct.name;
+        // this.FormData.find((i)=>i.id == this.FormID).amount = this.FormProduct.amount;
+        // this.FormData.find((i)=>i.id == this.FormID).price_buy = this.FormProduct.price_buy;
+        // this.FormData.find((i)=>i.id == this.FormID).price_sell = this.FormProduct.price_sell;
+
+        var _formData = new FormData();
+
+        _formData.append('name', this.FormProduct.name);
+
+        _formData.append('amount', this.FormProduct.amount);
+
+        _formData.append('price_buy', this.FormProduct.price_buy);
+
+        _formData.append('price_sell', this.FormProduct.price_sell); // console.log(this.FormID);
+
+
+        var idupdate = this.FormID;
+        this.$axios.get("/sanctum/csrf-cookie").then(function (response) {
+          _this.$axios.post("/api/store/update/".concat(idupdate), _formData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }).then(function (response) {
+            if (response.data.success) {
+              _this.GetAllStore();
+            }
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        });
         this.FormType = true;
       }
 
@@ -20061,6 +20078,8 @@ __webpack_require__.r(__webpack_exports__);
       this.FormShow = false;
     },
     edit_product: function edit_product(id) {
+      var _this2 = this;
+
       console.log("id :" + id);
       var item = this.FormData.find(function (i) {
         return i.id == id;
@@ -20070,14 +20089,24 @@ __webpack_require__.r(__webpack_exports__);
 
       this.FormType = false; // ປ່ຽນສະຖານະເປັນແກ້ໄຂ
 
-      this.FormID = id;
-      this.FormProduct.name = item.name;
-      this.FormProduct.amount = item.amount;
-      this.FormProduct.price_buy = item.price_buy;
-      this.FormProduct.price_sell = item.price_sell;
+      this.FormID = id; // this.FormProduct.name = item.name;
+      // this.FormProduct.amount = item.amount;
+      // this.FormProduct.price_buy = item.price_buy;
+      // this.FormProduct.price_sell = item.price_sell;
+
+      this.$axios.get("/sanctum/csrf-cookie").then(function (response) {
+        _this2.$axios.get("/api/store/edit/".concat(id)).then(function (respone) {
+          _this2.FormProduct.name = respone.data.name;
+          _this2.FormProduct.amount = respone.data.amount;
+          _this2.FormProduct.price_buy = respone.data.price_buy;
+          _this2.FormProduct.price_sell = respone.data.price_sell;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      });
     },
     del_product: function del_product(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$swal.fire({
         title: 'ທ່ານແນ່ໃຈບໍ່?',
@@ -20091,13 +20120,17 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.isConfirmed) {
           //  console.log("id :"+id);
-          var index = _this2.FormData.map(function (i) {
-            return i.id;
-          }).indexOf(id);
+          // let index = this.FormData.map((i)=>i.id).indexOf(id);
+          // this.FormData.splice(index,1);
+          _this3.$axios.get("/sanctum/csrf-cookie").then(function (response) {
+            _this3.$axios.post("/api/store/delete/".concat(id)).then(function (respone) {
+              _this3.GetAllStore();
+            })["catch"](function (error) {
+              console.log(error);
+            });
+          });
 
-          _this2.FormData.splice(index, 1);
-
-          _this2.$swal.fire('ສຳເລັດ!', 'ຂໍ້ມູນນີ້ໄດ້ຖືກລຶບແລ້ວ', 'success');
+          _this3.$swal.fire('ສຳເລັດ!', 'ຂໍ້ມູນນີ້ໄດ້ຖືກລຶບແລ້ວ', 'success');
         }
       });
     },
@@ -20106,11 +20139,11 @@ __webpack_require__.r(__webpack_exports__);
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     GetAllStore: function GetAllStore() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$axios.get("/sanctum/csrf-cookie").then(function (respone) {
-        _this3.$axios.get('api/store').then(function (respone) {
-          _this3.FormData = respone.data;
+        _this4.$axios.get('api/store').then(function (respone) {
+          _this4.FormData = respone.data;
         })["catch"](function (error) {
           console.log(error);
         });
