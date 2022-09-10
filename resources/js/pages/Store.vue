@@ -148,12 +148,21 @@
 										more</a></p>
 							</div>
 							<div class="card-body">
-                                FormShow : {{ FormShow}} <hr>
+                                <div class="row">
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" v-model="SearchProduct" @keyup.enter="GetAllStore()" id="product-name" placeholder="ຄົ້ນຫາ...">
+
+                                    </div>
+                                </div>
+
+                                <!-- FormShow : {{ FormShow}} <hr>
                                 FormProduct:  {{ FormProduct}} <hr>
-                                Data : {{ FormData}}
+                                Data : {{ FormData}} -->
                                 <div class="form-store row" v-if="FormShow">
                                     <div class="col-md-3">
-                                        aaaa
+                                        <img :src="imagePreview" class="mb-1" style="width:100%">
+                                        <input type="file" class="form-control" @change="onSelected">
                                     </div>
                                     <div class="col-md-9">
                                         <div class="row">
@@ -201,18 +210,23 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="list in FormData" :key="list.id">
+											<tr v-for="list in FormData.data" :key="list.id">
 												<th scope="row">{{ list.id }}</th>
 												<td>{{ list.name }}</td>
 												<td >{{   formatPrice(list.amount) }}</td>
-												<td>{{ list.price_buy }}</td>
+												<td>{{ formatPrice(list.price_buy) }}</td>
 
-                                                <td class="btn-icon-list"><button class="btn btn-info btn-icon" @click="edit_product(list.id)"><i class="fa fa-edit"></i></button><button class="btn btn-danger btn-icon"  @click="del_product(list.id)"><i class="far fa-trash-alt"></i></button></td>
+                                                <td class="btn-icon-list text-center">
+                                                    <button class="btn btn-info btn-icon" @click="edit_product(list.id)"><i class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger btn-icon"  @click="del_product(list.id)"><i class="far fa-trash-alt"></i></button>
+                                                </td>
 
 											</tr>
 
 										</tbody>
 									</table>
+                                    <pagination :pagination="FormData" @paginate="GetAllStore($event)" :offset="4"></pagination>
+
 								</div><!-- bd -->
 							</div><!-- bd -->
 						</div><!-- bd -->
@@ -227,6 +241,9 @@ export default {
 
     data() {
         return {
+            imagePreview:window.location.origin+'/assets/img/add_image.png',
+            imageProduct:'',
+            SearchProduct:'',
             FormShow:false,
             FormType:true,
             FormID:'',
@@ -255,8 +272,23 @@ export default {
     mounted() {
 
     },
-
+    watch:{
+        SearchProduct(){
+            if(this.SearchProduct == ''){
+                this.GetAllStore();
+            }
+        }
+    },
     methods: {
+        onSelected(event){
+            this.imageProduct = event.target.files[0];
+            let reader = new FileReader();
+            reader.readAsDataURL(this.imageProduct);
+            reader.addEventListener("load", function(){
+                this.imagePreview = reader.result;
+            }.bind(this), false)
+        },
+
         add_store(){
             this.FormShow = true
         },
@@ -283,7 +315,7 @@ export default {
                     formData.append('amount', this.FormProduct.amount);
                     formData.append('price_buy', this.FormProduct.price_buy);
                     formData.append('price_sell', this.FormProduct.price_sell);
-                    // formData.append('file', this.imageProduct);
+                    formData.append('file', this.imageProduct);
                     this.$axios.get("/sanctum/csrf-cookie").then((response)=>{
                         this.$axios.post("/api/store/add", formData, {headers:{"Content-Type": "multipart/form-data"}})
                         .then((response)=>{
@@ -316,6 +348,7 @@ export default {
                     formData.append('amount', this.FormProduct.amount);
                     formData.append('price_buy', this.FormProduct.price_buy);
                     formData.append('price_sell', this.FormProduct.price_sell);
+                    formData.append('file', this.imageProduct);
                     // console.log(this.FormID);
                     let idupdate = this.FormID;
                 this.$axios.get("/sanctum/csrf-cookie").then((response)=>{
@@ -343,7 +376,7 @@ export default {
         edit_product(id){
             console.log("id :"+id);
 
-            let item = this.FormData.find( (i)=>i.id == id); //ຄົ້ນຫາຂໍ້ມູນແລ້ວເກັບໄວ້ໃນ item
+            // let item = this.FormData.data.find( (i)=>i.id == id); //ຄົ້ນຫາຂໍ້ມູນແລ້ວເກັບໄວ້ໃນ item
             this.FormShow = true; // ສະແດງ form
             this.FormType = false;  // ປ່ຽນສະຖານະເປັນແກ້ໄຂ
             this.FormID = id;
@@ -405,9 +438,9 @@ export default {
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		},
 
-        GetAllStore(){
+        GetAllStore(page){
             this.$axios.get("/sanctum/csrf-cookie").then((respone)=>{
-                this.$axios.get('api/store').then((respone)=>{
+                this.$axios.get(`api/store?page=${page}&s=${this.SearchProduct}`).then((respone)=>{
                     this.FormData = respone.data;
                 }).catch((error) => {
                     console.log(error);
