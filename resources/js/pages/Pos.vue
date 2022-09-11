@@ -236,7 +236,27 @@ export default {
     methods: {
 
         ConfirmPay(){
+            this.$axios.get("/sanctum/csrf-cookie").then((response) => {
 
+                this.$axios.post("/api/transection/add",{
+                    acc_type:'income',
+                    listorder: this.ListOrder
+                })
+                .then((response) => {
+                    if (response.data.success) {
+                        $('#Modal_Pay').modal('hide');
+                        this.ListOrder = [];
+                        this.CashAmount = '';
+                        this.GetAllStore();
+                    } else {
+                        console.log(response.data.message);
+                    }
+                    })
+                    .catch((error) => {
+                    console.log(error);
+                    });
+
+            });
         },
 
         AddNum(num){

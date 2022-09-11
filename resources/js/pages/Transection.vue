@@ -101,6 +101,9 @@ export default {
 
     data() {
         return {
+			DataTransection:[],
+			monthtype:'y',
+			dmy:'',
 
         };
     },
@@ -110,6 +113,21 @@ export default {
     },
 
     methods: {
+		GetAllTran(page){
+			this.$axios.get("/sanctum/csrf-cookie").then((response)=>{
+				this.$axios.post(`/api/transection?page=${page}`,{
+					monthtype: this.monthtype,
+					dmy: this.dmy
+				})
+				.then((response)=>{
+						this.DataTransection = response.data;
+				}).catch((error)=>{
+					console.log(error);
+				})
+
+			});
+
+		},
 
     },
     beforeRouteEnter(to, from, next) {

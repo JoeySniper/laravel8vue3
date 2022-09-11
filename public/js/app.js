@@ -19965,7 +19965,28 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    ConfirmPay: function ConfirmPay() {},
+    ConfirmPay: function ConfirmPay() {
+      var _this = this;
+
+      this.$axios.get("/sanctum/csrf-cookie").then(function (response) {
+        _this.$axios.post("/api/transection/add", {
+          acc_type: 'income',
+          listorder: _this.ListOrder
+        }).then(function (response) {
+          if (response.data.success) {
+            $('#Modal_Pay').modal('hide');
+            _this.ListOrder = [];
+            _this.CashAmount = '';
+
+            _this.GetAllStore();
+          } else {
+            console.log(response.data.message);
+          }
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      });
+    },
     AddNum: function AddNum(num) {
       // console.log(num);
       if (num == "-") {
@@ -20046,11 +20067,11 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     GetAllStore: function GetAllStore(page) {
-      var _this = this;
+      var _this2 = this;
 
       this.$axios.get("/sanctum/csrf-cookie").then(function (respone) {
-        _this.$axios.get("api/store?page=".concat(page, "&s=").concat(_this.SearchProduct)).then(function (respone) {
-          _this.DataProduct = respone.data;
+        _this2.$axios.get("api/store?page=".concat(page, "&s=").concat(_this2.SearchProduct)).then(function (respone) {
+          _this2.DataProduct = respone.data;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -20427,10 +20448,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Laravel9vue3Transection',
   data: function data() {
-    return {};
+    return {
+      DataTransection: [],
+      monthtype: 'y',
+      dmy: ''
+    };
   },
   mounted: function mounted() {},
-  methods: {},
+  methods: {
+    GetAllTran: function GetAllTran(page) {
+      var _this = this;
+
+      this.$axios.get("/sanctum/csrf-cookie").then(function (response) {
+        _this.$axios.post("/api/transection?page=".concat(page), {
+          monthtype: _this.monthtype,
+          dmy: _this.dmy
+        }).then(function (response) {
+          _this.DataTransection = response.data;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      });
+    }
+  },
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     //window.Laravel.urlpath = to.name
     if (!window.Laravel.isLoggedin) {
