@@ -5,8 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use App\Models\Transection;
+
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
+
+
 
 class StoreController extends Controller
 {
@@ -42,7 +46,7 @@ class StoreController extends Controller
                 $generated_new_name='';
             }
 
-           
+
 
 
             $store = new Store();
@@ -52,6 +56,37 @@ class StoreController extends Controller
             $store->price_buy = $request->price_buy;
             $store->price_sell = $request->price_sell;
             $store->save();
+
+            $product_id = $store->id;
+
+                // ບັນທຶກ ທຸລະກຳ ລາຍຈ່າຍຊື້ສິນຄ້າ
+                $tran = Transection::all()->sortByDesc('id')->take(1)->toArray();
+                $number = 1;
+                foreach($tran as $new)
+                {
+                    $number = $new['tran_id'];
+                }
+                if($number!=''){
+                    $number1 = str_replace("INC","",$number);
+                    $number2 = str_replace("EXP","",$number1);
+                    $number = (int)$number2+1;
+                    $length = 5;
+                    $number = substr(str_repeat(0, $length).$number, - $length);
+                }
+
+                if($request->acc_type=='income'){ $tnum = 'INC'; }
+                elseif($request->acc_type=='expense'){ $tnum = 'EXP'; }
+
+                $tran = new Transection();
+                $tran->tran_id = $tnum.$number;
+                $tran->product_id = $product_id;
+                $tran->tran_type = $request->acc_type;
+                $tran->tran_detail = 'ນຳເຂົ້າສິນຄ້າໃໝ່: '.$request->name;
+                $tran->amount = $request->amount;
+                $tran->price = $request->price_buy*$request->amount;
+                $tran->save();
+
+                // ຈົບການບັນທຶກລາຍຈ່າຍ
 
             $success = true;
             $message = 'add success';
@@ -93,7 +128,7 @@ class StoreController extends Controller
             });
             $img->save($upload_path.'/'.$generated_new_name);
 
-          
+
 
                 try {
                     $store->update([
@@ -103,7 +138,7 @@ class StoreController extends Controller
                         'price_sell' => $request->price_sell,
                         'images' => $generated_new_name
                         ]);
-        
+
                     $success = true;
                     $message = "add success";
                 } catch (\Throwable $th) {
@@ -120,7 +155,7 @@ class StoreController extends Controller
                     'price_buy' => $request->price_buy,
                     'price_sell' => $request->price_sell
                     ]);
-    
+
                 $success = true;
                 $message = "add success";
             } catch (\Throwable $th) {
@@ -129,8 +164,8 @@ class StoreController extends Controller
             }
         }
 
-        
-        
+
+
 
         $response = [
             'success' => $success,

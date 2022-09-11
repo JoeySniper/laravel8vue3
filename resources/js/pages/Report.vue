@@ -43,9 +43,24 @@
 									<p class="tx-12 tx-gray-500 mb-2">Example of Valex Bordered Table.. <a href="">Learn
 											more</a></p>
 								</div>
+                                        <div class="row pd-b-10 justify-content-end">
+                                            <div class="btn-group me-2" role="group" aria-label="Basic example" style="width:180px;">
+                                                <button type="button" class="btn btn-secondary" @click="monthtype = 'm'"> <i class="mdi mdi-menu-right" v-if="monthtype == 'm'"></i> ເດືອນ</button>
+                                                <button type="button" class="btn btn-secondary" @click="monthtype = 'y'"> <i class="mdi mdi-menu-right" v-if="monthtype == 'y'"></i> ປີ</button>
+                                            </div>
+                                            <input type="date" style="width: 180px;" v-model="dmy" class="form-control me-2">
+                                            <button class="btn btn-success text-white me-2" @click="createReport()"  style="width:180px;">
+                                                <i class="mdi mdi-view-list"></i> ສະແດງລາຍງານ
+                                            </button>
+                                        </div>
+
+
 								<div class="card-body">
 									Boby
 								</div>
+
+
+
 							</div>
 			</div>
         <div class="col-md-4">
@@ -119,6 +134,11 @@ export default {
 
     data() {
         return {
+            monthtype:'m',
+			dmy:'',
+            data_income:[],
+            data_expense:[],
+
 
         };
     },
@@ -128,6 +148,25 @@ export default {
     },
 
     methods: {
+        createReport(){
+            this.$axios.get("/sanctum/csrf-cookie").then((response) => {
+
+					this.$axios.post("/api/report", {
+					monthtype: this.monthtype,
+					dmy: this.dmy,
+					})
+					.then((response) => {
+						//console.log(response.data)
+						this.data_income = response.data.income;
+						this.data_expense = response.data.expense;
+						// this.GenGrap();
+					})
+					.catch((error) => {
+						this.loading = false;
+					});
+            });
+
+        }
 
     },
     beforeRouteEnter(to, from, next) {

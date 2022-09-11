@@ -56,8 +56,8 @@
                                         </div>
                                     </div>
                             </div>
-                          
-                           
+
+
                         </div>
                 </div>
                 <div class="col-md-4">
@@ -190,8 +190,8 @@ export default {
             ListOrder:[],
             CashAmount:'',
             CashBack:'',
-        
-         
+
+
 
 
         };
@@ -207,7 +207,7 @@ export default {
             }
         },
 
-        
+
     },
     computed:{ // ການຄຳນວນ
         totalAmount(){
@@ -223,7 +223,7 @@ export default {
         },
 
         CashBack(){
-           return parseInt(this.CashAmount) - parseInt(this.totalAmount) 
+           return parseInt(this.CashAmount) - parseInt(this.totalAmount)
         },
         CheckCPay(){
             if(parseInt(this.CashAmount) - parseInt(this.totalAmount) >=0){
@@ -264,17 +264,17 @@ export default {
             if(num == "-"){
                 this.CashAmount = this.CashAmount.slice(0,-1)
             }else{
-                this.CashAmount = this.CashAmount+num  
+                this.CashAmount = this.CashAmount+num
             }
-            
+
         },
         BtPay(){
             $('#Modal_Pay').modal('show');
         },
-        
+
         AddOne(id){
             let item = this.DataProduct.data.find((i)=>i.id == id);
-            
+
 
             if(this.ListOrder.find((i)=>i.id == id)){
 
@@ -283,7 +283,12 @@ export default {
                 if(item.amount-old_order_amount > 0){
                     this.ListOrder.find((i)=>i.id ==id).order_amount = old_order_amount+1;
                 }else{
-                    alert('ສິນຄ້າໝົດ!');
+                    // alert('ສິນຄ້າໝົດ!');
+
+                    this.$swal.fire({
+                        icon: 'error',
+                        title: 'ສິນຄ້າໝົດ!',
+                        })
                 }
             }
 
@@ -307,10 +312,23 @@ export default {
         },
         AddToOrder(id){
             let item = this.DataProduct.data.find((i)=>i.id == id);
-            //let old_order_amount = this.ListOrder.find((i)=>i.id == id);
+            let old_order_amount = this.ListOrder.find((i)=>i.id == id);
 
             if(this.ListOrder.find((i)=>i.id == id)){
-                this.ListOrder.find((i)=>i.id == id).order_amount++;
+
+
+                if(item.amount-old_order_amount.order_amount > 0){
+                    // this.ListOrder.find((i)=>i.id ==id).order_amount = old_order_amount+1;
+                     this.ListOrder.find((i)=>i.id == id).order_amount++;
+                }else{
+                    // alert('ສິນຄ້າໝົດ!');
+
+                    this.$swal.fire({
+                        icon: 'error',
+                        title: 'ສິນຄ້າໝົດ!',
+                        })
+                }
+
             }else{
                 this.ListOrder.push({
                     id: item.id,
@@ -320,7 +338,7 @@ export default {
                 })
             }
 
-            
+
         },
         GetAllStore(page){
             this.$axios.get("/sanctum/csrf-cookie").then((respone)=>{
@@ -336,7 +354,7 @@ export default {
 			let val = (value / 1).toFixed(0).replace(",", ".");
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		},
-        
+
     },
     created(){
         this.GetAllStore();
@@ -359,7 +377,7 @@ export default {
         color: white;
         padding: 5px;
         font-weight: bold;
-        border-bottom-left-radius: 10px;                                     
+        border-bottom-left-radius: 10px;
 }
 
 </style>

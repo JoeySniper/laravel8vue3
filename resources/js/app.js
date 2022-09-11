@@ -7,6 +7,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import Cleave from 'vue-cleave-component';
 import axios from "axios";
 import Pagination from './components/Pagination.vue';
+// import moment from 'moment-timezone';
 
 require('./bootstrap');
 
@@ -18,4 +19,8 @@ app.use(VueSweetalert2);
 app.use(Cleave);
 app.config.globalProperties.$axios = axios;
 app.component('pagination', Pagination);
+// app.use(VueMoment, {
+//     moment,
+// })
+
 app.mount('#app');

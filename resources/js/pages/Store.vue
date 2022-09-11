@@ -297,7 +297,7 @@ export default {
             this.FormProduct.price_buy = '';
             this.FormProduct.price_sell = '';
             this.imageProduct = '';
-         
+
         },
 
         close_form(){
@@ -323,6 +323,8 @@ export default {
                     formData.append('price_buy', this.FormProduct.price_buy);
                     formData.append('price_sell', this.FormProduct.price_sell);
                     formData.append('file', this.imageProduct);
+                    formData.append('acc_type', 'expense');
+
                     this.$axios.get("/sanctum/csrf-cookie").then((response)=>{
                         this.$axios.post("/api/store/add", formData, {headers:{"Content-Type": "multipart/form-data"}})
                         .then((response)=>{
@@ -403,13 +405,13 @@ export default {
                     this.FormProduct.price_sell = respone.data.price_sell;
 
                     this.imageProduct = respone.data.images
-                    
+
                     if(respone.data.images){
                         this.imagePreview = window.location.origin +"/assets/img/"+respone.data.images;
                     }else{
                         this.imagePreview = window.location.origin +"/assets/img/add_image.png";
                     }
-                    
+
 
                 }).catch((error)=>{
                     console.log(error);
