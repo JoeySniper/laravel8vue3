@@ -213,8 +213,8 @@
 											<tr v-for="list in FormData.data" :key="list.id">
 												<th scope="row">{{ list.id }}</th>
 												<td>{{ list.name }}</td>
-												<td >{{   formatPrice(list.amount) }}</td>
-												<td>{{ formatPrice(list.price_buy) }}</td>
+												<td>{{formatPrice(list.amount)}}</td>
+												<td>{{formatPrice(list.price_buy)}}</td>
 
                                                 <td class="btn-icon-list text-center">
                                                     <button class="btn btn-info btn-icon" @click="edit_product(list.id)"><i class="fa fa-edit"></i></button>
@@ -291,6 +291,13 @@ export default {
 
         add_store(){
             this.FormShow = true
+            this.imagePreview = window.location.origin+'/assets/img/add_image.png'
+            this.FormProduct.name = '';
+            this.FormProduct.amount = '';
+            this.FormProduct.price_buy = '';
+            this.FormProduct.price_sell = '';
+            this.imageProduct = '';
+         
         },
 
         close_form(){
@@ -369,6 +376,8 @@ export default {
             this.FormProduct.amount = '';
             this.FormProduct.price_buy = '';
             this.FormProduct.price_sell = '';
+            this.imageProduct = '';
+            this.imagePreview = '';
             this.FormID = '';
             this.FormShow = false;
         },
@@ -392,6 +401,16 @@ export default {
                     this.FormProduct.amount = respone.data.amount;
                     this.FormProduct.price_buy = respone.data.price_buy;
                     this.FormProduct.price_sell = respone.data.price_sell;
+
+                    this.imageProduct = respone.data.images
+                    
+                    if(respone.data.images){
+                        this.imagePreview = window.location.origin +"/assets/img/"+respone.data.images;
+                    }else{
+                        this.imagePreview = window.location.origin +"/assets/img/add_image.png";
+                    }
+                    
+
                 }).catch((error)=>{
                     console.log(error);
                 });

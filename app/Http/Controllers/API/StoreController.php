@@ -29,8 +29,8 @@ class StoreController extends Controller
 
         try {
 
-            if($request->file(`file`)){
-                $upload_path = `assets/img`;
+            if($request->file('file')){
+                $upload_path = 'assets/img';
                 $generated_new_name = time() . '.' . $request->file->getClientOriginalExtension();
                 $image = $request->file('file');
                 $img = Image::make($image->getRealPath());
@@ -38,7 +38,11 @@ class StoreController extends Controller
                     $constraint->aspectRatio();
                 });
                 $img->save($upload_path.'/'.$generated_new_name);
-            }else{$generated_new_name='';}
+            }else{
+                $generated_new_name='';
+            }
+
+           
 
 
             $store = new Store();
@@ -72,20 +76,61 @@ class StoreController extends Controller
 
     public function update($id, Request $request ){
         $store = Store::find($id);
-        try {
-            $store->update([
-                'name' => $request->name,
-                'amount' => $request->amount,
-                'price_buy' => $request->price_buy,
-                'price_sell' => $request->price_sell
-                ]);
 
-            $success = true;
-            $message = "add success";
-        } catch (\Throwable $th) {
-            $success = false;
-            $message = $th->getMessage();
+        if($request->file('file')){
+            $upload_path = 'assets/img';
+            if($store->images!='' && $store->images!=null){
+                if(file_exists('assets/img/'.$store->images)){
+                    unlink('assets/img/'.$store->images);
+                }
+            }
+
+            $generated_new_name = time() . '.' . $request->file->getClientOriginalExtension();
+            $image = $request->file('file');
+            $img = Image::make($image->getRealPath());
+            $img->resize(800, null, function ($constraint){
+                $constraint->aspectRatio();
+            });
+            $img->save($upload_path.'/'.$generated_new_name);
+
+          
+
+                try {
+                    $store->update([
+                        'name' => $request->name,
+                        'amount' => $request->amount,
+                        'price_buy' => $request->price_buy,
+                        'price_sell' => $request->price_sell,
+                        'images' => $generated_new_name
+                        ]);
+        
+                    $success = true;
+                    $message = "add success";
+                } catch (\Throwable $th) {
+                    $success = false;
+                    $message = $th->getMessage();
+                }
+
+        }else{
+
+            try {
+                $store->update([
+                    'name' => $request->name,
+                    'amount' => $request->amount,
+                    'price_buy' => $request->price_buy,
+                    'price_sell' => $request->price_sell
+                    ]);
+    
+                $success = true;
+                $message = "add success";
+            } catch (\Throwable $th) {
+                $success = false;
+                $message = $th->getMessage();
+            }
         }
+
+        
+        
 
         $response = [
             'success' => $success,

@@ -143,6 +143,8 @@ export default {
 
     data() {
         return {
+            DataProduct:[]
+
 
         };
     },
