@@ -15,7 +15,7 @@ class StoreController extends Controller
         $search = \Request::get('s');
         $store = Store::orderBy('created_at','desc')
         ->where("name","LIKE","%{$search}%")
-        ->paginate(5)
+        ->paginate(15)
         ->toArray();
 
         // $store =  DBStore::select('select * from stores');

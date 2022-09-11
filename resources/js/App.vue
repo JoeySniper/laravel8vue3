@@ -1112,6 +1112,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
+<style>
+	.cursor-pointer{
+		cursor: pointer;
+	}
 </style>
