@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Transection;
 
 class ReportController extends Controller
 {
@@ -34,7 +35,7 @@ class ReportController extends Controller
     }
 
     public function dashcard(){
-        
+
         $income = Transection::where('tran_type', 'income')->get();
         $expense = Transection::where('tran_type', 'expense')->get();
         $store = Store::where('amount','!=','0')->get();

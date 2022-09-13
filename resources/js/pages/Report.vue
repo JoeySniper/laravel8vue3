@@ -156,7 +156,7 @@ export default {
 					dmy: this.dmy,
 					})
 					.then((response) => {
-						//console.log(response.data)
+						console.log(response.data)
 						this.data_income = response.data.income;
 						this.data_expense = response.data.expense;
 						// this.GenGrap();
